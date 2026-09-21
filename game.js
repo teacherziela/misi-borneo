@@ -1,33 +1,33 @@
 const missions=[
 {title:'Kepimpinan Kesukuan',qs:[
-{q:'Apakah gelaran ketua masyarakat Iban di kawasan pedalaman Sarawak?',a:'Tuai Rumah',w:['Peran Lepo','Laih Rayeh','Orang Tua']},
-{q:'Apakah gelaran pemimpin bagi kaum Kayan di Sarawak?',a:'Kelunan Maren atau Hipun Uma',w:['Tuai Rumah','Peran Lepo','Bobohizan']},
-{q:'Siapakah ketua bagi masyarakat Kadazandusun, Murut dan Orang Sungai di pedalaman Sabah?',a:'Orang Tua',w:['Wakil Raja','Ketua Bebas','Syahbandar']},
-{q:'Apakah peranan Bobohizan/Bobolian dalam masyarakat Kadazandusun?',a:'Mengurus soal adat dan pantang larang',w:['Mengutip cukai perdagangan','Menjadi wakil Kesultanan Sulu','Mengetuai perdagangan pesisir pantai']}
+{q:'Apakah gelaran ketua masyarakat Iban di kawasan pedalaman Sarawak?',p:180,a:'Tuai Rumah',w:['Peran Lepo','Laih Rayeh','Orang Tua']},
+{q:'Apakah gelaran pemimpin bagi kaum Kayan di Sarawak?',p:180,a:'Kelunan Maren atau Hipun Uma',w:['Tuai Rumah','Peran Lepo','Bobohizan']},
+{q:'Siapakah ketua bagi masyarakat Kadazandusun, Murut dan Orang Sungai di pedalaman Sabah?',p:182,a:'Orang Tua',w:['Wakil Raja','Ketua Bebas','Syahbandar']},
+{q:'Apakah peranan Bobohizan/Bobolian dalam masyarakat Kadazandusun?',p:182,a:'Mengurus soal adat dan pantang larang',w:['Mengutip cukai perdagangan','Menjadi wakil Kesultanan Sulu','Mengetuai perdagangan pesisir pantai']}
 ]},
 {title:'Kepimpinan Lembah Sungai',qs:[
-{q:'Antara berikut, yang manakah kerajaan yang muncul di kawasan lembah sungai Sarawak?',a:'Sawaku, Samadong, Kalka, Saribas dan Melano',w:['Brunei, Sulu, Johor, Pahang dan Perak','Kutai, Angkor, Majapahit, Funan dan Srivijaya','Marudu, Tungku, Kinabatangan, Sugut dan Labuk']},
-{q:'Apakah antara tugas wakil raja di Sarawak dan Sabah?',a:'Menjalankan kehakiman, menjaga keamanan dan kebajikan serta mengutip cukai',w:['Menghapuskan semua ketua tempatan','Mengawal kegiatan pertanian sahaja','Membina petempatan hanya di kawasan pedalaman']},
-{q:'Pasangan manakah yang tepat tentang ketua bebas di Sabah?',a:'Syarif Osman — Marudu; Datu Kurunding — Tungku',w:['Syarif Osman — Tungku; Datu Kurunding — Marudu','Datu Merpati — Marudu; Syarif Osman — Saribas','Datu Kurunding — Samarahan; Datu Merpati — Tungku']},
-{q:'Apakah tiga corak kepimpinan di kawasan lembah sungai Sabah?',a:'Wakil Brunei, wakil Sulu dan ketua bebas',w:['Tuai Rumah, Peran Lepo dan Laih Rayeh','Bendahara, Laksamana dan Syahbandar','Orang Tua, Bobohizan dan Babalian']}
+{q:'Antara berikut, yang manakah kerajaan yang muncul di kawasan lembah sungai Sarawak?',p:180,a:'Sawaku, Samadong, Kalka, Saribas dan Melano',w:['Brunei, Sulu, Johor, Pahang dan Perak','Kutai, Angkor, Majapahit, Funan dan Srivijaya','Marudu, Tungku, Kinabatangan, Sugut dan Labuk']},
+{q:'Apakah antara tugas wakil raja di Sarawak dan Sabah?',p:181,a:'Menjalankan kehakiman, menjaga keamanan dan kebajikan serta mengutip cukai',w:['Menghapuskan semua ketua tempatan','Mengawal kegiatan pertanian sahaja','Membina petempatan hanya di kawasan pedalaman']},
+{q:'Pasangan manakah yang tepat tentang ketua bebas di Sabah?',p:183,a:'Syarif Osman — Marudu; Datu Kurunding — Tungku',w:['Syarif Osman — Tungku; Datu Kurunding — Marudu','Datu Merpati — Marudu; Syarif Osman — Saribas','Datu Kurunding — Samarahan; Datu Merpati — Tungku']},
+{q:'Apakah tiga corak kepimpinan di kawasan lembah sungai Sabah?',p:182,a:'Wakil Brunei, wakil Sulu dan ketua bebas',w:['Tuai Rumah, Peran Lepo dan Laih Rayeh','Bendahara, Laksamana dan Syahbandar','Orang Tua, Bobohizan dan Babalian']}
 ]},
 {title:'Kegiatan Ekonomi',qs:[
-{q:'Apakah kegiatan ekonomi masyarakat Sarawak di kawasan pedalaman?',a:'Mengutip hasil hutan, memburu haiwan liar dan menanam padi',w:['Menangkap ikan, membuat perahu dan perusahaan sagu','Perdagangan, mengutip hasil laut dan membuat perahu','Menanam buah-buahan, sayur-sayuran dan menangkap ikan']},
-{q:'Antara berikut, yang manakah kegiatan masyarakat Sarawak di pesisir pantai?',a:'Perdagangan, menangkap ikan, membuat perahu dan perusahaan sagu',w:['Memburu haiwan liar dan mengutip sarang burung','Menanam padi serta mengutip hasil hutan sahaja','Menanam buah-buahan dan sayur-sayuran sahaja']},
-{q:'Apakah kegiatan masyarakat Sabah di kawasan pedalaman?',a:'Mengutip hasil hutan, menanam padi dan mengutip sarang burung',w:['Perdagangan dan membuat perahu sahaja','Menangkap ikan dan mengutip hasil laut sahaja','Menanam buah-buahan dan sayur-sayuran sahaja']},
-{q:'Apakah kegiatan ekonomi yang dijalankan di pesisir pantai Sabah?',a:'Menangkap ikan, membuat perahu, mengutip hasil laut dan perdagangan',w:['Memburu haiwan liar dan menanam padi sahaja','Menanam buah-buahan dan sayur-sayuran sahaja','Mengutip sarang burung dan hasil hutan sahaja']}
+{q:'Apakah kegiatan ekonomi masyarakat Sarawak di kawasan pedalaman?',p:184,a:'Mengutip hasil hutan, memburu haiwan liar dan menanam padi',w:['Menangkap ikan, membuat perahu dan perusahaan sagu','Perdagangan, mengutip hasil laut dan membuat perahu','Menanam buah-buahan, sayur-sayuran dan menangkap ikan']},
+{q:'Antara berikut, yang manakah kegiatan masyarakat Sarawak di pesisir pantai?',p:184,a:'Perdagangan, menangkap ikan, membuat perahu dan perusahaan sagu',w:['Memburu haiwan liar dan mengutip sarang burung','Menanam padi serta mengutip hasil hutan sahaja','Menanam buah-buahan dan sayur-sayuran sahaja']},
+{q:'Apakah kegiatan masyarakat Sabah di kawasan pedalaman?',p:185,a:'Mengutip hasil hutan, menanam padi dan mengutip sarang burung',w:['Perdagangan dan membuat perahu sahaja','Menangkap ikan dan mengutip hasil laut sahaja','Menanam buah-buahan dan sayur-sayuran sahaja']},
+{q:'Apakah kegiatan ekonomi yang dijalankan di pesisir pantai Sabah?',p:185,a:'Menangkap ikan, membuat perahu, mengutip hasil laut dan perdagangan',w:['Memburu haiwan liar dan menanam padi sahaja','Menanam buah-buahan dan sayur-sayuran sahaja','Mengutip sarang burung dan hasil hutan sahaja']}
 ]},
 {title:'Keunikan Masyarakat',qs:[
-{q:'Antara berikut, yang manakah kaum bumiputera utama yang dinyatakan bagi Sarawak?',a:'Iban, Melayu, Orang Ulu, Bidayuh dan Melanau',w:['Kadazandusun, Murut, Bajau, Suluk dan Orang Sungai','Melayu, Siam, Khmer, Cham dan Mon','Iban, Bajau, Rungus, Iranun dan Suluk']},
-{q:'Apakah keunikan kaum Bajau/Sama yang tinggal di pantai barat Sabah?',a:'Budaya menunggang kuda',w:['Menghasilkan pua kumbu','Membina rumah baruk','Mengadakan upacara Miring']},
-{q:'Di kawasan manakah kebanyakan kaum Murut tinggal?',a:'Tenom hingga Kalabakan',w:['Penampang hingga Papar','Kudat hingga Sandakan','Kinabatangan hingga Labuk']},
-{q:'Di manakah kebanyakan Orang Sungai tinggal?',a:'Sungai Kinabatangan, Sungai Sugut, Sungai Paitan dan Sungai Labuk',w:['Sungai Rajang, Sungai Baram dan Sungai Sarawak','Sungai Perak, Sungai Pahang dan Sungai Muar','Sungai Batang Lupar, Sungai Rimbas dan Sungai Retus']}
+{q:'Antara berikut, yang manakah kaum bumiputera utama yang dinyatakan bagi Sarawak?',p:186,a:'Iban, Melayu, Orang Ulu, Bidayuh dan Melanau',w:['Kadazandusun, Murut, Bajau, Suluk dan Orang Sungai','Melayu, Siam, Khmer, Cham dan Mon','Iban, Bajau, Rungus, Iranun dan Suluk']},
+{q:'Apakah keunikan kaum Bajau/Sama yang tinggal di pantai barat Sabah?',p:188,a:'Budaya menunggang kuda',w:['Menghasilkan pua kumbu','Membina rumah baruk','Mengadakan upacara Miring']},
+{q:'Di kawasan manakah kebanyakan kaum Murut tinggal?',p:189,a:'Tenom hingga Kalabakan',w:['Penampang hingga Papar','Kudat hingga Sandakan','Kinabatangan hingga Labuk']},
+{q:'Di manakah kebanyakan Orang Sungai tinggal?',p:189,a:'Sungai Kinabatangan, Sungai Sugut, Sungai Paitan dan Sungai Labuk',w:['Sungai Rajang, Sungai Baram dan Sungai Sarawak','Sungai Perak, Sungai Pahang dan Sungai Muar','Sungai Batang Lupar, Sungai Rimbas dan Sungai Retus']}
 ]},
 {title:'Kesenian dan Seni Bina',qs:[
-{q:'Pua kumbu merupakan hasil kerja tangan kaum manakah?',a:'Iban',w:['Melanau','Rungus','Bajau/Sama']},
-{q:'Pasangan manakah yang tepat tentang hasil kesenian masyarakat Sabah?',a:'Kaum Iranun — kain dastar yang digunakan sebagai tanjak',w:['Kaum Rungus — pua kumbu untuk upacara kematian','Kaum Bajau/Sama — keringkam bersulam benang emas','Kaum Murut — terendak untuk Pesta Kaul']},
-{q:'Mengapakah rumah tinggi kaum Melanau dibina kira-kira 10 meter dari aras tanah?',a:'Untuk mengelakkan serangan musuh',w:['Untuk menjalankan perdagangan','Untuk menyimpan hasil laut','Untuk menjadi tempat perlumbaan perahu']},
-{q:'Apakah kegunaan lepa bagi kaum Bajau/Sama di pantai timur Sabah?',a:'Mengangkut barang dan dijadikan tempat kediaman',w:['Menjadi rumah ritual kaum Bidayuh','Menyimpan senjata dan tengkorak','Menjadi tempat menenun pua kumbu']}
+{q:'Pua kumbu merupakan hasil kerja tangan kaum manakah?',p:192,a:'Iban',w:['Melanau','Rungus','Bajau/Sama']},
+{q:'Pasangan manakah yang tepat tentang hasil kesenian masyarakat Sabah?',p:193,a:'Kaum Iranun — kain dastar yang digunakan sebagai tanjak',w:['Kaum Rungus — pua kumbu untuk upacara kematian','Kaum Bajau/Sama — keringkam bersulam benang emas','Kaum Murut — terendak untuk Pesta Kaul']},
+{q:'Mengapakah rumah tinggi kaum Melanau dibina kira-kira 10 meter dari aras tanah?',p:199,a:'Untuk mengelakkan serangan musuh',w:['Untuk menjalankan perdagangan','Untuk menyimpan hasil laut','Untuk menjadi tempat perlumbaan perahu']},
+{q:'Apakah kegunaan lepa bagi kaum Bajau/Sama di pantai timur Sabah?',p:201,a:'Mengangkut barang dan dijadikan tempat kediaman',w:['Menjadi rumah ritual kaum Bidayuh','Menyimpan senjata dan tengkorak','Menjadi tempat menenun pua kumbu']}
 ]}];
 const sea=document.getElementById('sea'),ship=document.getElementById('ship'),wake=document.getElementById('wake'),pirate=document.getElementById('pirate'),islands=[...document.querySelectorAll('.island')],score=document.getElementById('score'),livesEl=document.getElementById('lives'),quiz=document.getElementById('quiz'),topic=document.getElementById('topic'),missionLabel=document.getElementById('missionLabel'),qCount=document.getElementById('qCount'),bar=document.getElementById('bar'),question=document.getElementById('question'),answers=document.getElementById('answers'),feedback=document.getElementById('feedback'),treasure=document.getElementById('treasure'),sink=document.getElementById('sink'),win=document.getElementById('win'),cannonLayer=document.getElementById('cannonLayer');
 let unlocked=0,finished=new Set(),active=-1,qIndex=0,qOrder=[],lives=3,shipX=9,shipY=50,dx=0,dy=0,vx=0,vy=0,shipFacing=1,lastWake=0,lastTime=0,nearCooldown=false,answerLocked=false,audioOn=true,audioStarted=false,audioCtx,oceanNode,oceanGain;
@@ -115,6 +115,7 @@ function renderQuestion(){
 }
 function check(ok,button){
   if(answerLocked)return;
+  const current=qOrder[qIndex];
   answerLocked=true;[...answers.children].forEach(b=>b.disabled=true);
   if(!ok){
     button.classList.add('bad-answer');
@@ -129,7 +130,7 @@ function check(ok,button){
     return;
   }
   button.classList.add('good-answer');
-  feedback.textContent='✅ Tepat!';
+  feedback.textContent=`✅ Tepat! Rujukan buku teks: hlm. ${current.p}.`;
   feedback.className='correct';
   qIndex++;
   if(qIndex<4){
