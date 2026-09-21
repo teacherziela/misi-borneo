@@ -56,7 +56,7 @@ function refresh(){
   const ms=document.getElementById('missionStatus');
   if(ms){
     if(finished.size===5) ms.innerHTML='<span>✅ Semua artifak diperoleh</span><span>🏝️ Belayar ke Harta Warisan</span><span>💥 3 tembakan = kapal karam</span>';
-    else ms.innerHTML=`<span>📍 Destinasi semasa: <b>${missions[unlocked].title}</b></span><span>🧠 Jawab 1 cabaran untuk buka destinasi seterusnya</span><span>💥 Salah = ditembak sekali, kemudian cuba lagi</span><span>❤️ 3 tembakan = kapal karam</span>`;
+    else ms.innerHTML=`<span>📍 Destinasi semasa: <b>${missions[unlocked].title}</b></span><span>📝 Jawab 4 soalan peperiksaan untuk buka destinasi seterusnya</span><span>💥 Salah = 1 tembakan, kemudian cuba soalan sama</span><span>❤️ 3 tembakan = kapal karam</span>`;
   }
 }
 function getCenter(el){const s=sea.getBoundingClientRect(),r=el.getBoundingClientRect();return{x:((r.left+r.width/2)-s.left)/s.width*100,y:((r.top+r.height/2)-s.top)/s.height*100}}
