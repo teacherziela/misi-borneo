@@ -30,21 +30,118 @@ const missions=[
 {q:'Sebuah rumah tradisional menggunakan kayu, buluh dan bahan daripada persekitaran. Apakah nilai yang dapat dirumuskan?',a:'Masyarakat bijak menyesuaikan seni bina dengan sumber dan persekitaran',w:['Masyarakat bergantung sepenuhnya pada bahan import','Seni bina tradisional tidak dipengaruhi alam sekitar','Bahan tempatan hanya digunakan kerana tiada kemahiran membina']},
 {q:'Pasangan manakah paling tepat?',a:'Rumah tradisional — mencerminkan cara hidup dan penyesuaian masyarakat',w:['Anyaman — digunakan hanya dalam pentadbiran','Ukiran — tidak mempunyai nilai budaya','Tenunan — berasal sepenuhnya daripada pengaruh moden']}]}];
 const sea=document.getElementById('sea'),ship=document.getElementById('ship'),wake=document.getElementById('wake'),pirate=document.getElementById('pirate'),islands=[...document.querySelectorAll('.island')],score=document.getElementById('score'),livesEl=document.getElementById('lives'),quiz=document.getElementById('quiz'),topic=document.getElementById('topic'),missionLabel=document.getElementById('missionLabel'),qCount=document.getElementById('qCount'),bar=document.getElementById('bar'),question=document.getElementById('question'),answers=document.getElementById('answers'),feedback=document.getElementById('feedback'),treasure=document.getElementById('treasure'),sink=document.getElementById('sink'),win=document.getElementById('win'),cannonLayer=document.getElementById('cannonLayer');
-let unlocked=0,finished=new Set(),active=-1,qIndex=0,qOrder=[],lives=3,shipX=9,shipY=50,dx=0,dy=0,lastTime=0,nearCooldown=false,audioOn=true,audioStarted=false,audioCtx,oceanNode,oceanGain;
+let unlocked=0,finished=new Set(),active=-1,qIndex=0,qOrder=[],lives=3,shipX=9,shipY=50,dx=0,dy=0,vx=0,vy=0,heading=0,lastTime=0,nearCooldown=false,answerLocked=false,audioOn=true,audioStarted=false,audioCtx,oceanNode,oceanGain;
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
-function updateShip(){ship.style.left=shipX+'%';ship.style.top=shipY+'%';wake.style.left=(shipX-2)+'%';wake.style.top=(shipY+4)+'%';const ang=dx||dy?Math.atan2(dy,dx)*180/Math.PI+90:0;ship.style.transform=`translate(-50%,-50%) rotate(${ang}deg)`}
-function refresh(){score.textContent=`${finished.size} / 5`;livesEl.textContent=Array(lives).fill('❤️').join(' ')+Array(3-lives).fill('🖤').join(' ');islands.forEach((b,i)=>{const lock=i>unlocked;b.disabled=lock;b.classList.toggle('locked',lock);b.classList.toggle('open',!lock&&!finished.has(i));b.classList.toggle('done',finished.has(i))});treasure.querySelector('.chest').textContent=finished.size===5?'💰':'🔒'}
+function turnToward(a,b,t){let d=((b-a+540)%360)-180;return a+d*t}
+function updateShip(){
+  ship.style.left=shipX+'%';ship.style.top=shipY+'%';
+  wake.style.left=(shipX-2.2)+'%';wake.style.top=(shipY+4.2)+'%';
+  if(Math.hypot(vx,vy)>.001){
+    const target=Math.atan2(vy,vx)*180/Math.PI+90;
+    heading=turnToward(heading,target,.16);
+  }
+  ship.style.transform=`translate(-50%,-50%) rotate(${heading}deg)`;
+  wake.style.opacity=Math.hypot(vx,vy)>.002?'.85':'.28';
+}
+function refresh(){
+  score.textContent=`${finished.size} / 5`;
+  livesEl.textContent=Array(lives).fill('❤️').join(' ')+Array(3-lives).fill('🖤').join(' ');
+  islands.forEach((b,i)=>{const lock=i>unlocked;b.disabled=lock;b.classList.toggle('locked',lock);b.classList.toggle('open',!lock&&!finished.has(i));b.classList.toggle('done',finished.has(i))});
+  treasure.querySelector('.chest').textContent=finished.size===5?'💰':'🔒';
+  const ms=document.getElementById('missionStatus');
+  if(ms){
+    if(finished.size===5) ms.innerHTML='<span>✅ Semua artifak diperoleh</span><span>🏝️ Belayar ke Harta Warisan</span><span>💥 3 tembakan = kapal karam</span>';
+    else ms.innerHTML=`<span>📍 Destinasi semasa: <b>${missions[unlocked].title}</b></span><span>🧠 Jawab 1 cabaran untuk buka destinasi seterusnya</span><span>💥 Salah = ditembak sekali, kemudian cuba lagi</span><span>❤️ 3 tembakan = kapal karam</span>`;
+  }
+}
 function getCenter(el){const s=sea.getBoundingClientRect(),r=el.getBoundingClientRect();return{x:((r.left+r.width/2)-s.left)/s.width*100,y:((r.top+r.height/2)-s.top)/s.height*100}}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
 function checkArrival(){if(quiz.open||sink.open||win.open||nearCooldown)return;const p={x:shipX,y:shipY};for(let i=0;i<islands.length;i++){if(i>unlocked||finished.has(i))continue;const c=getCenter(islands[i]);if(dist(p,c)<8.2){nearCooldown=true;setTimeout(()=>nearCooldown=false,1200);openMission(i);return}}if(finished.size===5){const c=getCenter(treasure);if(dist(p,c)<9){win.showModal();playWinSound()}}}
-function step(t){if(!lastTime)lastTime=t;const dt=Math.min(32,t-lastTime);lastTime=t;if(!quiz.open&&!sink.open&&!win.open&&(dx||dy)){const speed=.020*dt;shipX=Math.max(3,Math.min(96,shipX+dx*speed));shipY=Math.max(13,Math.min(91,shipY+dy*speed));updateShip();checkArrival()}requestAnimationFrame(step)}requestAnimationFrame(step);
-function bindHold(id,x,y){const b=document.getElementById(id);const start=e=>{e.preventDefault();startAudio();dx=x;dy=y};const stop=e=>{if(e)e.preventDefault();if(dx===x&&dy===y){dx=0;dy=0}};b.addEventListener('pointerdown',start);b.addEventListener('pointerup',stop);b.addEventListener('pointercancel',stop);b.addEventListener('pointerleave',stop)}bindHold('left',-1,0);bindHold('right',1,0);bindHold('up',0,-1);bindHold('down',0,1);
-window.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){startAudio();e.preventDefault();if(e.key==='ArrowLeft'){dx=-1;dy=0}if(e.key==='ArrowRight'){dx=1;dy=0}if(e.key==='ArrowUp'){dx=0;dy=-1}if(e.key==='ArrowDown'){dx=0;dy=1}}});window.addEventListener('keyup',e=>{if(e.key.startsWith('Arrow')){dx=0;dy=0}});
-function openMission(i){active=i;qIndex=0;qOrder=shuffle(missions[i].qs);missionLabel.textContent=`MISI ${i+1} DARIPADA 5`;topic.textContent=missions[i].title;renderQuestion();quiz.showModal()}
-function renderQuestion(){const item=qOrder[qIndex];qCount.textContent=`Soalan ${qIndex+1} / ${qOrder.length}`;bar.style.width=`${((qIndex+1)/qOrder.length)*100}%`;question.textContent=item.q;feedback.textContent='';feedback.className='';answers.innerHTML='';shuffle([{text:item.a,ok:true},...item.w.map(text=>({text,ok:false}))]).forEach((opt,idx)=>{const b=document.createElement('button');b.type='button';b.innerHTML=`<span class="exam-letter">${String.fromCharCode(65+idx)}</span><span>${opt.text}</span>`;b.addEventListener('click',()=>check(opt.ok,b));answers.appendChild(b)})}
-function check(ok,button){if(!ok){button.disabled=true;feedback.textContent='💥 Salah! Lanun melepaskan tembakan!';feedback.className='wrong';pirateFire();return}feedback.textContent='✅ Tepat!';feedback.className='correct';qIndex++;if(qIndex<qOrder.length){[...answers.children].forEach(b=>b.disabled=true);setTimeout(renderQuestion,500)}else{finished.add(active);unlocked=Math.max(unlocked,Math.min(4,active+1));refresh();[...answers.children].forEach(b=>b.disabled=true);feedback.textContent=active===4?'🏆 Semua artifak diperoleh. Belayar sendiri ke Harta Warisan!':'🏆 Pulau ditakluki. Belayar ke pulau seterusnya!';setTimeout(()=>quiz.close(),900)}}
-function pirateFire(){playCannon();const s=sea.getBoundingClientRect(),pr=pirate.getBoundingClientRect(),sr=ship.getBoundingClientRect();const startX=pr.left+pr.width/2-s.left,startY=pr.top+pr.height/2-s.top,endX=sr.left+sr.width/2-s.left,endY=sr.top+sr.height/2-s.top;const ball=document.createElement('div');ball.className='ball';ball.style.left=startX+'px';ball.style.top=startY+'px';cannonLayer.appendChild(ball);ball.animate([{transform:'translate(0,0)'},{transform:`translate(${endX-startX}px,${endY-startY}px)`}],{duration:520,easing:'ease-in'}).onfinish=()=>{ball.remove();const spl=document.createElement('div');spl.className='splash';spl.textContent='💦';spl.style.left=(endX-18)+'px';spl.style.top=(endY-20)+'px';cannonLayer.appendChild(spl);setTimeout(()=>spl.remove(),700);ship.classList.add('hit');setTimeout(()=>ship.classList.remove('hit'),450);lives--;refresh();if(lives<=0){setTimeout(()=>{if(quiz.open)quiz.close();sink.showModal();},350)}}}
-function resetGame(){unlocked=0;finished.clear();lives=3;active=-1;qIndex=0;shipX=9;shipY=50;dx=dy=0;updateShip();if(quiz.open)quiz.close();if(sink.open)sink.close();if(win.open)win.close();refresh()}
+function step(t){
+  if(!lastTime)lastTime=t;
+  const dt=Math.min(32,t-lastTime);lastTime=t;
+  if(!quiz.open&&!sink.open&&!win.open){
+    const targetVX=dx*.020,targetVY=dy*.020;
+    const ease=Math.min(1,dt/95);
+    vx+=(targetVX-vx)*ease;vy+=(targetVY-vy)*ease;
+    if(!dx&&!dy){const drag=Math.pow(.82,dt/16);vx*=drag;vy*=drag}
+    if(Math.hypot(vx,vy)>.00035){
+      shipX+=vx*dt;shipY+=vy*dt;
+      if(shipX<3){shipX=3;vx=0} if(shipX>96){shipX=96;vx=0}
+      if(shipY<13){shipY=13;vy=0} if(shipY>91){shipY=91;vy=0}
+      updateShip();checkArrival();
+    }
+  }else{vx*=.72;vy*=.72}
+  requestAnimationFrame(step)
+}requestAnimationFrame(step);
+const held=new Set();
+function recalcInput(){
+  dx=(held.has('right')?1:0)-(held.has('left')?1:0);
+  dy=(held.has('down')?1:0)-(held.has('up')?1:0);
+  if(dx&&dy){const n=Math.SQRT1_2;dx*=n;dy*=n}
+}
+function bindHold(id,dir){
+  const b=document.getElementById(id);
+  const start=e=>{e.preventDefault();startAudio();held.add(dir);recalcInput()};
+  const stop=e=>{if(e)e.preventDefault();held.delete(dir);recalcInput()};
+  b.addEventListener('pointerdown',start);b.addEventListener('pointerup',stop);
+  b.addEventListener('pointercancel',stop);b.addEventListener('pointerleave',stop);
+}
+bindHold('left','left');bindHold('right','right');bindHold('up','up');bindHold('down','down');
+const keyDir={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down',a:'left',d:'right',w:'up',s:'down',A:'left',D:'right',W:'up',S:'down'};
+window.addEventListener('keydown',e=>{const dir=keyDir[e.key];if(dir){startAudio();e.preventDefault();held.add(dir);recalcInput()}});
+window.addEventListener('keyup',e=>{const dir=keyDir[e.key];if(dir){held.delete(dir);recalcInput()}});
+window.addEventListener('blur',()=>{held.clear();recalcInput()});
+function openMission(i){active=i;qIndex=0;qOrder=[shuffle(missions[i].qs)[0]];missionLabel.textContent=`MISI ${i+1} DARIPADA 5`;topic.textContent=missions[i].title;answerLocked=false;renderQuestion();quiz.showModal()}
+function renderQuestion(){
+  answerLocked=false;
+  const item=qOrder[qIndex];
+  qCount.textContent='1 cabaran untuk destinasi ini';
+  bar.style.width='100%';question.textContent=item.q;
+  feedback.textContent='';feedback.className='';answers.innerHTML='';
+  shuffle([{text:item.a,ok:true},...item.w.map(text=>({text,ok:false}))]).forEach((opt,idx)=>{
+    const b=document.createElement('button');b.type='button';
+    b.innerHTML=`<span class="exam-letter">${String.fromCharCode(65+idx)}</span><span>${opt.text}</span>`;
+    b.addEventListener('click',()=>check(opt.ok,b));answers.appendChild(b)
+  })
+}
+function check(ok,button){
+  if(answerLocked)return;
+  answerLocked=true;[...answers.children].forEach(b=>b.disabled=true);
+  if(!ok){
+    button.classList.add('bad-answer');
+    feedback.textContent='💥 Salah! Lanun menembak sekali... selepas itu cuba lagi.';
+    feedback.className='wrong';
+    pirateFire(()=>{
+      if(lives>0){
+        feedback.textContent='❤️ Masih ada peluang. Cuba soalan ini sekali lagi!';
+        setTimeout(renderQuestion,650);
+      }
+    });
+    return;
+  }
+  button.classList.add('good-answer');
+  feedback.textContent='✅ Tepat! Artifak diperoleh — destinasi seterusnya dibuka.';
+  feedback.className='correct';
+  finished.add(active);unlocked=Math.max(unlocked,Math.min(4,active+1));refresh();
+  setTimeout(()=>{quiz.close();answerLocked=false;nearCooldown=true;setTimeout(()=>nearCooldown=false,850)},1050)
+}
+function pirateFire(done){
+  playCannon();
+  const s=sea.getBoundingClientRect(),pr=pirate.getBoundingClientRect(),sr=ship.getBoundingClientRect();
+  const startX=pr.left+pr.width/2-s.left,startY=pr.top+pr.height/2-s.top,endX=sr.left+sr.width/2-s.left,endY=sr.top+sr.height/2-s.top;
+  const ball=document.createElement('div');ball.className='ball';ball.style.left=startX+'px';ball.style.top=startY+'px';cannonLayer.appendChild(ball);
+  ball.animate([{transform:'translate(0,0) scale(.8)'},{transform:`translate(${endX-startX}px,${endY-startY}px) scale(1.15)`}],{duration:650,easing:'cubic-bezier(.2,.7,.3,1)'})
+  .onfinish=()=>{
+    ball.remove();const spl=document.createElement('div');spl.className='splash';spl.textContent='💥💦';
+    spl.style.left=(endX-24)+'px';spl.style.top=(endY-24)+'px';cannonLayer.appendChild(spl);setTimeout(()=>spl.remove(),800);
+    ship.classList.add('hit');setTimeout(()=>ship.classList.remove('hit'),520);
+    lives--;refresh();
+    if(lives<=0){setTimeout(()=>{if(quiz.open)quiz.close();sink.showModal();answerLocked=false},500)}
+    else if(done)setTimeout(done,350);
+  }
+}
+function resetGame(){unlocked=0;finished.clear();lives=3;active=-1;qIndex=0;shipX=9;shipY=50;dx=dy=vx=vy=0;heading=0;answerLocked=false;held.clear();updateShip();if(quiz.open)quiz.close();if(sink.open)sink.close();if(win.open)win.close();refresh()}
 document.getElementById('closeQuiz').addEventListener('click',()=>quiz.close());document.getElementById('restart').addEventListener('click',resetGame);document.getElementById('retry').addEventListener('click',resetGame);document.getElementById('playAgain').addEventListener('click',resetGame);
 function startAudio(){if(audioStarted||!audioOn)return;audioStarted=true;audioCtx=new (window.AudioContext||window.webkitAudioContext)();const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);const data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.55;const src=audioCtx.createBufferSource();src.buffer=buf;src.loop=true;const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=650;oceanGain=audioCtx.createGain();oceanGain.gain.value=.055;src.connect(filter).connect(oceanGain).connect(audioCtx.destination);src.start();oceanNode=src}
 function playCannon(){startAudio();if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(95,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(38,audioCtx.currentTime+.22);g.gain.setValueAtTime(.28,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.3);o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.31)}
